@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class gui implements ActionListeners
+public class gui implements ActionListener
 {
 
     //a main panel contain other panels
@@ -13,7 +13,6 @@ public class gui implements ActionListeners
     private JPanel panel1 = new JPanel();
     private JButton[] b = new JButton[7];
     private Picture[] p = new Picture[7];
-    private int currentPosition = 0; //current position of buttons
         
     //variables for display section
     private JPanel panel2 = new JPanel();
@@ -32,6 +31,7 @@ public class gui implements ActionListeners
             b[i] = new JButton(p[i]);
             b[i].setSize(70, 70);
             panel1.add(b[i], "South");
+            b[i].addActionListener(this);
         }
 
         panel1.setLayout(new GridLayout(1, 7));
@@ -40,11 +40,9 @@ public class gui implements ActionListeners
 
     //this is the panel2 for the display sections
     private void display(){
-        int k;
-        int j;
-        for(k = 0; k < 6; k++)
+        for(int k = 0; k < 6; k++)
         {
-            for(j = 0;j < 4; j++)
+            for(int j = 0; j < 4; j++)
             {
                 l[k][j] = new JLabel(pics);
                 l[k][j].setSize(70,70);
@@ -85,5 +83,53 @@ public class gui implements ActionListeners
         a.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         a.setVisible(true);
 
+    }
+
+    private int row_counter = 5;
+    private int column_counter = 0;
+
+    private void changeIcon(int r, int c, ActionEvent e)
+    {
+        if(e.getSource() == b[0])
+        {
+            l[r][c].setIcon(p[0]);
+        }
+        if(e.getSource() == b[1])
+        {
+            l[r][c].setIcon(p[1]);
+        }
+        if(e.getSource() == b[2])
+        {
+            l[r][c].setIcon(p[2]);
+        }
+        if(e.getSource() == b[3])
+        {
+            l[r][c].setIcon(p[3]);
+        }
+        if(e.getSource() == b[4])
+        {
+            l[r][c].setIcon(p[4]);
+        }
+        if(e.getSource() == b[5])
+        {
+            l[r][c].setIcon(p[5]);
+        }
+        if(e.getSource() == b[6])
+        {
+            l[r][c].setIcon(p[6]);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) 
+    {
+        changeIcon(row_counter, column_counter, e);
+        
+        column_counter++;
+        if(column_counter == 4)
+        {
+            column_counter = 0;
+            row_counter--;
+        }
     }
 }
