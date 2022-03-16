@@ -1,8 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Random
-;
+import java.util.Random;
 public class guess implements ActionListener
 {
 
@@ -10,6 +9,7 @@ public class guess implements ActionListener
     private int[] ans = new int[4];
     private int[] order = new int[4];
     private int cCP = 0;
+    private int cC = 0;
  
     //varaibles for generating random numbers which represents different colours
     Random rand = new Random();
@@ -22,9 +22,16 @@ public class guess implements ActionListener
     public JPanel panel1 = new JPanel();
     public JButton[] b = new JButton[7];
     public Picture[] p = new Picture[7];
-
     public JLabel[][] l = new JLabel[6][4];
-    
+
+    public void ans()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            ans[i] = rand.nextInt(7);
+            System.out.println(ans[i]);
+        } 
+    } 
 
     //this is a function adding the buttons to the panel1
     public void buttons()
@@ -38,15 +45,14 @@ public class guess implements ActionListener
             b[i].addActionListener(this);
         }
         panel1.setLayout(new GridLayout(1, 7));
+        ans();
     }
 
-
-    public void matchAns(int[] order)
+    public void matchOrder(int[] ans, int[] order)
     {
-        
-        for(int i = 0; i < 4; i++)
+        cCP = 0;
+        for(int i = 0; i < 4; i++) 
         {
-            ans[i] = rand.nextInt(8);
             System.out.println(ans[i]);
             System.out.println(order[i]);
             if(ans[i] == order[i])
@@ -54,7 +60,25 @@ public class guess implements ActionListener
                 cCP++;
             }
         }
-        System.out.println(cCP);
+        System.out.println("Order result: " + cCP);
+    }
+
+    public void matchColour(int []ans, int [] order)
+    {
+        cC = 0;
+        for(int i = 0;i < 4; i++)
+        {
+            for(int j = 0; j < 4; j++)
+            {
+                if(ans[i] == order[j])
+                {
+                    cC++;
+                    order[j] = 9;
+                    break;
+                }
+            }
+        }
+        System.out.println(cC);
     }
 
 
@@ -108,7 +132,8 @@ public class guess implements ActionListener
         if(column_counter == 4)
         {
             column_counter = 0;
-            matchAns(order);
+            matchOrder(ans, order);
+            matchColour(ans, order);
             row_counter--;
         }
     }
