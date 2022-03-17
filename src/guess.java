@@ -2,14 +2,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
+
+
 public class guess implements ActionListener
 {
 
+    //variables for the result section
+    public JPanel panel3 = new JPanel();
+    public JLabel[][] result = new JLabel[6][4];
+    private Picture score1 = new Picture("Score_0.png");
+    private Picture score2 = new Picture("Score_1.png");
+
+    //the colourCode class
+    private colourCode c = new colourCode();
     //integers that used to represents the choices of the users
     private int[] ans = new int[4];
-    private int[] order = new int[4];
-    private int cCP = 0;
-    private int cC = 0;
+    public int[] order = new int[4];
+    
  
     //varaibles for generating random numbers which represents different colours
     Random rand = new Random();
@@ -24,14 +33,17 @@ public class guess implements ActionListener
     public Picture[] p = new Picture[7];
     public JLabel[][] l = new JLabel[6][4];
 
-    public void ans()
+    public int[] ans()
     {
         for(int i = 0; i < 4; i++)
         {
             ans[i] = rand.nextInt(7);
             System.out.println(ans[i]);
         } 
+        return ans;
     } 
+
+    private int[] colourSet = ans();
 
     //this is a function adding the buttons to the panel1
     public void buttons()
@@ -45,42 +57,9 @@ public class guess implements ActionListener
             b[i].addActionListener(this);
         }
         panel1.setLayout(new GridLayout(1, 7));
-        ans();
     }
 
-    public void matchOrder(int[] ans, int[] order)
-    {
-        cCP = 0;
-        for(int i = 0; i < 4; i++) 
-        {
-            System.out.println(ans[i]);
-            System.out.println(order[i]);
-            if(ans[i] == order[i])
-            {
-                cCP++;
-            }
-        }
-        System.out.println("Order result: " + cCP);
-    }
-
-    public void matchColour(int []ans, int [] order)
-    {
-        cC = 0;
-        for(int i = 0;i < 4; i++)
-        {
-            for(int j = 0; j < 4; j++)
-            {
-                if(ans[i] == order[j])
-                {
-                    cC++;
-                    order[j] = 9;
-                    break;
-                }
-            }
-        }
-        System.out.println(cC);
-    }
-
+    
 
     //When the buttons are pressed the current label will change to the colour that the use selected 
     private void changeIcon(int r, int c, ActionEvent e)
@@ -123,17 +102,36 @@ public class guess implements ActionListener
         }
     }
 
+    public void resultCheck(int r, int cC, int cCP)
+    {
+        int i;
+        if(cCP != 0 || cC != 0)
+        {
+            for(i = 0; i < cCP; i++)
+            {
+                result[r][i].setIcon(score1);
+            }
+            int j;
+            System.out.println("this is " + i);
+            for(j = i;j < cC ; j++)
+            {
+                result[r][j].setIcon(score2);
+            }
+            System.out.println("this is " + j);
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) 
     {
         changeIcon(row_counter, column_counter, e);
-        
         column_counter++;
         if(column_counter == 4)
         {
             column_counter = 0;
-            matchOrder(ans, order);
-            matchColour(ans, order);
+            c.matchOrder(colourSet, order);
+            c.matchColour(colourSet, order);
+            resultCheck(row_counter, c.getCC(), c.getcCP());
             row_counter--;
         }
     }

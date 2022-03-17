@@ -1,12 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 
-public class gui extends guess
+public class gui
 {
+    private guess G = new guess();
+
     //a main panel contain other panels
-    public JPanel mainPanel = new JPanel();
+    private JPanel mainPanel = new JPanel();
     //variables for options to select
     private JFrame a = new JFrame();
 
@@ -14,9 +15,6 @@ public class gui extends guess
     private JPanel panel2 = new JPanel();
     private Picture pics = new Picture("Empty.png");
     
-    //variables for result section
-    private JPanel panel3 = new JPanel();
-    private JLabel[] result = new JLabel[24];
 
 
     //this is the panel2 for the display sections
@@ -25,9 +23,9 @@ public class gui extends guess
         {
             for(int j = 0; j < 4; j++)
             {
-                l[k][j] = new JLabel(pics);
-                l[k][j].setSize(70,70);
-                panel2.add(l[k][j]);
+                G.l[k][j] = new JLabel(pics);
+                G.l[k][j].setSize(70,70);
+                panel2.add(G.l[k][j]);
             }
         }
         panel2.setLayout(new GridLayout(6,4));
@@ -36,28 +34,28 @@ public class gui extends guess
 
     //this is the panel3 for the results
     private void results(){
-        int m;
-
-        for(m = 0; m < 24; m++)
+        for(int m = 0; m < 6; m++)
         {
-            result[m] = new JLabel(pics);
-            result[m].setSize(35,35);
-            panel3.add(result[m]);
+            for(int n = 0; n < 4; n++)
+            {
+                G.result[m][n] = new JLabel(pics);
+                G.result[m][n].setSize(35,35);
+                G.panel3.add(G.result[m][n]);
+            }
         }
 
-        panel3.setLayout(new GridLayout(12,2));
+        G.panel3.setLayout(new GridLayout(12,2));
     }
-
 
     public void finalGUI()
     {
         mainPanel.setLayout(new BorderLayout()); //let the mainPanel be border layout to handle the position of other panels
-        buttons();
+        G.buttons();
         display();
         results();
-        mainPanel.add(panel1, "South");
+        mainPanel.add(G.panel1, "South");
         mainPanel.add(panel2, "Center");
-        mainPanel.add(panel3, "East");
+        mainPanel.add(G.panel3, "East");
         a.setContentPane(mainPanel);
         a.setTitle("SCC110 Project");
         a.setSize(700,700);
