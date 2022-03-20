@@ -3,7 +3,5 @@ public class App {
     {
         gui ui = new gui();
         ui.finalGUI();
-
-    }
+    } 
 }
- 

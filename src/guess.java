@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class guess implements ActionListener
 {
-
     //variables for the result section
     public JPanel panel3 = new JPanel();
     public JLabel[][] result = new JLabel[6][4];
@@ -32,7 +31,11 @@ public class guess implements ActionListener
     public JButton[] b = new JButton[7];
     public Picture[] p = new Picture[7];
     public JLabel[][] l = new JLabel[6][4];
-
+    
+    /**
+     * this is a method to generate a set of answer and store it in an array
+     * @return the correct answer of colour code
+     */
     public int[] ans()
     {
         for(int i = 0; i < 4; i++)
@@ -43,9 +46,14 @@ public class guess implements ActionListener
         return ans;
     } 
 
+    /**
+     * this generates a set of correct answer
+     */
     private int[] colourSet = ans();
 
-    //this is a function adding the buttons to the panel1
+    /**
+     * this is a function creates the button section
+     */
     public void buttons()
     {
         for(int i = 0; i < 7; i++)
@@ -61,7 +69,12 @@ public class guess implements ActionListener
 
     
 
-    //When the buttons are pressed the current label will change to the colour that the use selected 
+    /**
+     * a function that When the buttons are pressed the current label will change to the colour that the user selected
+     * @param r the row of current position
+     * @param c the column of current position
+     * @param e the button that the user pressed
+     */ 
     private void changeIcon(int r, int c, ActionEvent e)
     {
         
@@ -102,6 +115,13 @@ public class guess implements ActionListener
         }
     }
 
+    /**
+     * this is a function that changes the image of the result section
+     * according to amount of correct colour and amount of correct position and colour
+     * @param r the row of the current position
+     * @param cC the number of correct colour
+     * @param cCP the number of input that colour and position are correct
+     */
     public void resultCheck(int r, int cC, int cCP)
     {
         int i;
@@ -121,6 +141,18 @@ public class guess implements ActionListener
         }
     }
 
+    //flag1 checks whether the user won
+    public int flag = 0;
+    //flag2 checks whether the user has run out of attempts
+    public int flag2 = 0;
+    
+
+    /**
+     * when the button is pressed it will use the changeIcon function and change the icon of current position
+     * this method will always check whether the user has won or run out of attempts
+     * and if either situation happened flag1 or flag2 will change its value and popup the message
+     * for each column completed it will check the answer
+     */
     @Override
     public void actionPerformed(ActionEvent e) 
     {
@@ -128,11 +160,19 @@ public class guess implements ActionListener
         column_counter++;
         if(column_counter == 4)
         {
+            if(row_counter == 0)
+            {
+                flag2 = 1;
+            }
             column_counter = 0;
             c.matchOrder(colourSet, order);
             c.matchColour(colourSet, order);
             resultCheck(row_counter, c.getCC(), c.getcCP());
             row_counter--;
+            if(c.getcCP() == 4)
+            {
+                flag = 1;
+            }
         }
     }
 }
