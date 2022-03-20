@@ -2,7 +2,6 @@ public class colourCode
 {
     private int cCP = 0;
     private int cC = 0;
-    public int[] asd;
 
     /**
      * this matches the colour and the order of users input with the random generated answer 

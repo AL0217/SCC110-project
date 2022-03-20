@@ -9,6 +9,7 @@ public class gui implements ActionListener
     
     //A starting ui  
     private JPanel SPanel = new JPanel();
+    private JLabel SLabel = new JLabel("Colour Code for SCC110");
     private JButton SButton = new JButton("Click Here To Start");
 
     //a main panel that contain beginning, in game and ending
@@ -80,10 +81,14 @@ public class gui implements ActionListener
      */
     private void createSPanel()
     {
+        SPanel.add(SLabel);
         SPanel.add(SButton);
         SButton.setFont(new Font("Arial", Font. PLAIN, 40));
+        SLabel.setFont(new Font("Arial", Font. PLAIN, 20));
         SButton.setLocation(350,350);
         SPanel.setBackground(Color.BLACK);
+        SLabel.setForeground(Color.WHITE);
+        SPanel.setLayout(new GridLayout(1,2));
     }
 
     /**
