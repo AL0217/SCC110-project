@@ -2,134 +2,148 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
 public class gui implements ActionListener
 {
+    private guess G = new guess();
 
-    //a main panel contain other panels
-    private JPanel mainPanel = new JPanel();
+    
+    //A starting ui  
+    private JPanel SPanel = new JPanel();
+    private JLabel SLabel = new JLabel("Colour Code for SCC110");
+    private JButton SButton = new JButton("Click Here To Start");
+
+    //a main panel that contain beginning, in game and ending
+    private JPanel panelCont = new JPanel();
+
+    //a panel contain other panels
+    public JPanel mainPanel = new JPanel();
+    
     //variables for options to select
     private JFrame a = new JFrame();
-    private JPanel panel1 = new JPanel();
-    private JButton[] b = new JButton[7];
-    private Picture[] p = new Picture[7];
-        
+
     //variables for display section
     private JPanel panel2 = new JPanel();
-    private JLabel[][] l = new JLabel[6][4];
     private Picture pics = new Picture("Empty.png");
     
-    //variables for result section
-    private JPanel panel3 = new JPanel();
-    private JLabel[] result = new JLabel[24];
+    //instance of Card Layout
+    public static CardLayout card = new CardLayout();
 
-    //this is the panel1 for the buttons
-    private void buttons(){
-        for(int i = 0; i < 7; i++)
-        {
-            p[i] = new Picture("Colour_" + i + ".png");
-            b[i] = new JButton(p[i]);
-            b[i].setSize(70, 70);
-            panel1.add(b[i], "South");
-            b[i].addActionListener(this);
-        }
-
-        panel1.setLayout(new GridLayout(1, 7));
-    }
-
-
-    //this is the panel2 for the display sections
+    /**
+     * this function create the panel2 for the display sections 
+     */ 
     private void display(){
         for(int k = 0; k < 6; k++)
         {
             for(int j = 0; j < 4; j++)
             {
-                l[k][j] = new JLabel(pics);
-                l[k][j].setSize(70,70);
-                panel2.add(l[k][j]);
+                G.l[k][j] = new JLabel(pics);
+                G.l[k][j].setSize(70,70);
+                panel2.add(G.l[k][j]);
             }
         }
         panel2.setLayout(new GridLayout(6,4));
         mainPanel.add(panel2, "Center");
     }
 
-    //this is the panel3 for the results
+    /**
+     * this function create the results section
+     */
     private void results(){
-        int m;
-
-        for(m = 0; m < 24; m++)
+        for(int m = 0; m < 6; m++)
         {
-            result[m] = new JLabel(pics);
-            result[m].setSize(35,35);
-            panel3.add(result[m]);
+            for(int n = 0; n < 4; n++)
+            {
+                G.result[m][n] = new JLabel(pics);
+                G.result[m][n].setSize(35,35);
+                G.panel3.add(G.result[m][n]);
+            }
         }
 
-        panel3.setLayout(new GridLayout(12,2));
+        G.panel3.setLayout(new GridLayout(12,2));
     }
 
-
-    public void finalGUI()
+    /**
+     * this function creates a main panel which is where the user plays the game
+     */
+    private void createMPanel()
     {
         mainPanel.setLayout(new BorderLayout()); //let the mainPanel be border layout to handle the position of other panels
-        buttons();
+        G.buttons();
         display();
         results();
-        mainPanel.add(panel1, "South");
+        mainPanel.add(G.panel1, "South");
         mainPanel.add(panel2, "Center");
-        mainPanel.add(panel3, "East");
-        a.setContentPane(mainPanel);
+        mainPanel.add(G.panel3, "East"); 
+    }
+
+    /**
+     * This is a start Panel that contains a Button and some text message
+     */
+    private void createSPanel()
+    {
+        SPanel.add(SLabel);
+        SPanel.add(SButton);
+        SButton.setFont(new Font("Arial", Font. PLAIN, 40));
+        SLabel.setFont(new Font("Arial", Font. PLAIN, 20));
+        SButton.setLocation(350,350);
+        SPanel.setBackground(Color.BLACK);
+        SLabel.setForeground(Color.WHITE);
+        SPanel.setLayout(new GridLayout(1,2));
+    }
+
+    /**
+     * this is a function for the main programme to call
+     * through this method we can put the correct starting panel and create the frame for user to play the game
+     */
+    public void finalGUI()
+    {
+        createMPanel();
+        createSPanel();
+
+        panelCont.setLayout(card);
+        
+        panelCont.add(SPanel, "1");
+        panelCont.add(mainPanel, "2");
+        card.show(panelCont, "1");
+        SButton.addActionListener(this);
+        a.setContentPane(panelCont);
         a.setTitle("SCC110 Project");
         a.setSize(700,700);
         a.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        a.setVisible(true);
-
-    }
-
-    private int row_counter = 5;
-    private int column_counter = 0;
-
-    private void changeIcon(int r, int c, ActionEvent e)
-    {
-        if(e.getSource() == b[0])
-        {
-            l[r][c].setIcon(p[0]);
-        }
-        if(e.getSource() == b[1])
-        {
-            l[r][c].setIcon(p[1]);
-        }
-        if(e.getSource() == b[2])
-        {
-            l[r][c].setIcon(p[2]);
-        }
-        if(e.getSource() == b[3])
-        {
-            l[r][c].setIcon(p[3]);
-        }
-        if(e.getSource() == b[4])
-        {
-            l[r][c].setIcon(p[4]);
-        }
-        if(e.getSource() == b[5])
-        {
-            l[r][c].setIcon(p[5]);
-        }
-        if(e.getSource() == b[6])
-        {
-            l[r][c].setIcon(p[6]);
-        }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) 
-    {
-        changeIcon(row_counter, column_counter, e);
+        a.setVisible(true); 
         
-        column_counter++;
-        if(column_counter == 4)
+        while(true)
         {
-            column_counter = 0;
-            row_counter--;
+            System.out.printf(""); //I don't know why but I need this printf to make this works
+            if(G.flag == 1)
+            {
+                int res = JOptionPane.showOptionDialog(null, "Congratulation!!! you win!!", "Test", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+                if(res == 0 || res == -1)
+                {
+                    System.exit(0);
+                }
+                break;
+            }
+            else if(G.flag2 == 1)
+            {
+                int res = JOptionPane.showOptionDialog(null, "Run out of attempts...You lose.. TAT", "Test", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+                if(res == 0 || res == -1)
+                {
+                    System.exit(0);
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * if the start button is clicked jumped to the main Panel and start the game
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == SButton)
+        {
+            card.show(panelCont, "2");
         }
     }
 }
